@@ -8,6 +8,11 @@ RUN DEBIAN_FRONTEND=noninteractive apt update && \
     DEBIAN_FRONTEND=noninteractive apt install -y \
     ssl-cert
 
+WORKDIR /web
+COPY ./services/radio-web .
+RUN rm -rf /web/bin
+RUN rm -rf /web/deps
+
 COPY ./docker/nginx/ffdhe4096.pem /etc/ssl/ffdhe4096.pem
 
 COPY ./docker/nginx/snippets/* /etc/nginx/snippets/

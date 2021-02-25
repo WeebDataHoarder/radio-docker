@@ -89,7 +89,6 @@ services:
     networks:
       - radio
     volumes:
-      - ./services/radio-web:/web:ro
       - ./data/shares:/shares:ro
       - ${DATA_MOUNT_PATH}:${DATA_MOUNT_PATH}:ro
     ports:
