@@ -11,11 +11,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt update && \
     libavcodec-dev libavutil-dev libavformat-dev libavfilter-dev libavdevice-dev libswresample-dev libswscale-dev
 
 COPY ./services/kawa .
-RUN cargo install --path . --locked --root /usr
 
 # Code no longer needed
-RUN rm -rf /usr/src/kawa
-
+RUN cargo install --path . --locked --root /usr && rm -rf /usr/src/kawa
 
 COPY ./docker/kawa/error.flac /
 COPY ./docker/kawa/entrypoint.sh /

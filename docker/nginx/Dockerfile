@@ -10,8 +10,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt update && \
 
 WORKDIR /web
 COPY ./services/radio-web .
-RUN rm -rf /web/bin
-RUN rm -rf /web/deps
+RUN rm -rf /web/bin && rm -rf /web/deps
 
 COPY ./docker/nginx/ffdhe4096.pem /etc/ssl/ffdhe4096.pem
 

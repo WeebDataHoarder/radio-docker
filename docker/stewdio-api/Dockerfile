@@ -8,10 +8,8 @@ ENV VIRTUAL_ENV=/usr/src/stewdio-api/venv3
 
 RUN DEBIAN_FRONTEND=noninteractive apt update && \
     DEBIAN_FRONTEND=noninteractive apt install -y \
-    postgresql-client locales libchromaprint-tools ffmpeg
-RUN sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen && locale-gen
-RUN locale-gen
-RUN update-locale LANG="en_US.UTF-8"
+    postgresql-client locales libchromaprint-tools ffmpeg && \
+    sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen && locale-gen && update-locale LANG="en_US.UTF-8"
 
 WORKDIR /usr/src/stewdio-api
 COPY ./services/stewdio-api .
