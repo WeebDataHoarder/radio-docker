@@ -1,0 +1,9 @@
+[submodule "services/radio-web"]
+	path = services/radio-web
+	url = https://github.com/WeebDataHoarder/radio-web.git
+[submodule "services/stewdio-api"]
+	path = services/stewdio-api
+	url = https://github.com/WeebDataHoarder/stewdio-api.git
+[submodule "services/kawa"]
+	path = services/kawa
+	url = https://github.com/WeebDataHoarder/kawa.git

@@ -1,0 +1,112 @@
+version: "3"
+
+networks:
+  radio:
+    external: false
+
+services:
+  kawa:
+    build:
+      context: .
+      dockerfile: ./docker/kawa/Dockerfile
+      args:
+        - KAWA_API_PORT=${KAWA_API_PORT}
+        - KAWA_STREAM_PORT=${KAWA_STREAM_PORT}
+    container_name: kawa
+    environment:
+      - KAWA_API_PORT=${KAWA_API_PORT}
+      - KAWA_STREAM_PORT=${KAWA_STREAM_PORT}
+      - KAWA_STREAM_NAME=${KAWA_STREAM_NAME}
+      - KAWA_RANDOM_SONG_URL=${KAWA_RANDOM_SONG_URL}
+      - KAWA_NOW_PLAYING_URL=${KAWA_NOW_PLAYING_URL}
+      - DEFAULT_API_KEY=${DEFAULT_API_KEY}
+    restart: always
+    networks:
+      - radio
+    volumes:
+      - ${DATA_MOUNT_PATH}:${DATA_MOUNT_PATH}:ro
+    depends_on:
+      - api
+
+  api:
+    build:
+      context: .
+      dockerfile: ./docker/stewdio-api/Dockerfile
+      args:
+        - STEWDIO_API_PORT=${STEWDIO_API_PORT}
+    container_name: api
+    environment:
+      - KAWA_API_PORT=${KAWA_API_PORT}
+      - DEFAULT_API_KEY=${DEFAULT_API_KEY}
+      - SITE_BOT_NAME=${SITE_BOT_NAME}
+      - ACOUSTID_API_KEY=${ACOUSTID_API_KEY}
+      - STEWDIO_API_PORT=${STEWDIO_API_PORT}
+      - STEWDIO_API_THREADS=${STEWDIO_API_THREADS}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DATA_MOUNT_PATH=${DATA_MOUNT_PATH}
+    restart: always
+    networks:
+      - radio
+    volumes:
+      - ${DATA_MOUNT_PATH}:${DATA_MOUNT_PATH}:ro
+    depends_on:
+      - db
+
+  fpm:
+    build:
+      context: .
+      dockerfile: ./docker/fpm/Dockerfile
+      args:
+        - STEWDIO_API_PORT=${STEWDIO_API_PORT}
+        - SITE_HOSTNAME=${SITE_HOSTNAME}
+        - DEFAULT_API_KEY=${DEFAULT_API_KEY}
+        - LASTFM_API_KEY=${LASTFM_API_KEY}
+        - DB_USER=${DB_USER}
+        - DB_PASSWORD=${DB_PASSWORD}
+        - DB_NAME=${DB_NAME}
+    container_name: fpm
+    restart: always
+    networks:
+      - radio
+    volumes:
+      - ${DATA_MOUNT_PATH}:${DATA_MOUNT_PATH}:ro
+    depends_on:
+      - db
+      - api
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+      args:
+        - STEWDIO_API_PORT=${STEWDIO_API_PORT}
+        - SITE_HOSTNAME=${SITE_HOSTNAME}
+        - KAWA_STREAM_PORT=${KAWA_STREAM_PORT}
+    restart: always
+    container_name: nginx
+    networks:
+      - radio
+    volumes:
+      - ./services/radio-web:/web:ro
+      - ./data/shares:/shares:ro
+      - ${DATA_MOUNT_PATH}:${DATA_MOUNT_PATH}:ro
+    ports:
+      - "${SITE_PORT}:443"
+    depends_on:
+      - fpm
+      - kawa
+
+  db:
+    image: postgres:13
+    restart: always
+    container_name: db
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    networks:
+      - radio
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
