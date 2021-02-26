@@ -39,7 +39,6 @@ services:
     environment:
       - KAWA_API_PORT=${KAWA_API_PORT}
       - DEFAULT_API_KEY=${DEFAULT_API_KEY}
-      - SITE_BOT_NAME=${SITE_BOT_NAME}
       - ACOUSTID_API_KEY=${ACOUSTID_API_KEY}
       - STEWDIO_API_PORT=${STEWDIO_API_PORT}
       - STEWDIO_API_THREADS=${STEWDIO_API_THREADS}
@@ -67,6 +66,7 @@ services:
         - DB_USER=${DB_USER}
         - DB_PASSWORD=${DB_PASSWORD}
         - DB_NAME=${DB_NAME}
+        - DB_NAME_TORRENTS=${DB_NAME_TORRENTS}
     container_name: fpm
     restart: always
     networks:
@@ -77,6 +77,42 @@ services:
       - db
       - api
 
+  bot:
+    build:
+      context: .
+      dockerfile: ./docker/radio-ircbot/Dockerfile
+      args:
+        - STEWDIO_API_PORT=${STEWDIO_API_PORT}
+        - KAWA_STREAM_PORT=${KAWA_STREAM_PORT}
+        - KAWA_API_PORT=${KAWA_API_PORT}
+        - DATA_MOUNT_PATH=${DATA_MOUNT_PATH}
+        - SITE_HOSTNAME=${SITE_HOSTNAME}
+        - DEFAULT_API_KEY=${DEFAULT_API_KEY}
+        - DB_USER=${DB_USER}
+        - DB_PASSWORD=${DB_PASSWORD}
+        - DB_NAME=${DB_NAME}
+        - DB_NAME_TORRENTS=${DB_NAME_TORRENTS}
+        - IRC_SERVER_HOST=${IRC_SERVER_HOST}
+        - IRC_SERVER_PORT=${IRC_SERVER_PORT}
+        - BOT_USE_SATSUKI=${BOT_USE_SATSUKI}
+        - BOT_USER=${BOT_USER}
+        - BOT_NICK=${BOT_NICK}
+        - BOT_PASSWORD=${BOT_PASSWORD}
+        - BOT_KEYID=${BOT_KEYID}
+        - BOT_RADIO_CHANNEL=${BOT_RADIO_CHANNEL}
+        - BOT_NP_CHANNEL=${BOT_NP_CHANNEL}
+    restart: always
+    container_name: bot
+    networks:
+      - radio
+    volumes:
+      - ./data/cache:/cache:rw
+      - ./data/shares:/shares:ro
+      - ${DATA_MOUNT_PATH}:${DATA_MOUNT_PATH}:ro
+    depends_on:
+      - api
+      - kawa
+
   nginx:
     build:
       context: .
@@ -85,6 +121,7 @@ services:
         - STEWDIO_API_PORT=${STEWDIO_API_PORT}
         - SITE_HOSTNAME=${SITE_HOSTNAME}
         - KAWA_STREAM_PORT=${KAWA_STREAM_PORT}
+        - DATA_MOUNT_PATH=${DATA_MOUNT_PATH}
     restart: always
     container_name: nginx
     networks:
@@ -105,8 +142,11 @@ services:
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_MULTIPLE_DATABASES="${DB_NAME}","${DB_NAME_TORRENTS}"
+      - DB_NAME_TORRENTS=${DB_NAME_TORRENTS}
     networks:
       - radio
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+      - ./docker/postgres/schema:/schema:ro
+      - ./data/db:/var/lib/postgresql/data:rw

@@ -7,3 +7,6 @@
 [submodule "services/kawa"]
 	path = services/kawa
 	url = https://github.com/WeebDataHoarder/kawa.git
+[submodule "services/radio-ircbot"]
+	path = services/radio-ircbot
+	url = https://github.com/WeebDataHoarder/radio-ircbot.git
