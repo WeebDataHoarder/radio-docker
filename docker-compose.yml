@@ -107,7 +107,7 @@ services:
       - radio
     volumes:
       - ./data/cache:/cache:rw
-      - ./data/shares:/shares:ro
+      - ./data/shares:/shares:rw
       - ${DATA_MOUNT_PATH}:${DATA_MOUNT_PATH}:ro
     depends_on:
       - api
