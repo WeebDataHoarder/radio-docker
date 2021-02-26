@@ -147,6 +147,7 @@ services:
     networks:
       - radio
     volumes:
+      - ./docker/postgres/postgresql.conf:/etc/postgresql/postgresql.conf:ro
       - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
       - ./docker/postgres/schema:/schema:ro
       - ./data/db:/var/lib/postgresql/data:rw
