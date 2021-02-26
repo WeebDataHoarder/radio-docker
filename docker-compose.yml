@@ -139,6 +139,7 @@ services:
     image: postgres:13.2
     restart: always
     container_name: db
+    shm_size: 1g
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
