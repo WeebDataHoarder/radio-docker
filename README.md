@@ -6,7 +6,7 @@ Glue and linkage of all projects to work together.
 * `docker-compose`
 
 ### Usage
-* `$ git clone`
+* `$ git clone --recursive https://github.com/WeebDataHoarder/radio-docker.git`
 * `$ cp .env.example .env`, then edit `.env` to fit your needs. This is the main configuration file.
 * Build/Upgrade: `$ git clone update --init --recursive && docker-compose build`
 * Start `$ docker-compose up` (`$ docker-compose up -d` for detached)
