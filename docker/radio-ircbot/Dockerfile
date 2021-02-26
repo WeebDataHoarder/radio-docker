@@ -45,7 +45,6 @@ RUN sed -i "s%EXAMPLE_DEFAULT_API_KEY%${DEFAULT_API_KEY}%g" /bot/config.php
 RUN sed -i "s%EXAMPLE_IRC_SERVER_HOST%${IRC_SERVER_HOST}%g" /bot/config.php
 RUN sed -i "s%IRC_SERVER_PORT = 6697%IRC_SERVER_PORT = ${IRC_SERVER_PORT}%g" /bot/config.php
 RUN sed -i "s%EXAMPLE_IRC_SERVER_PASS%${IRC_SERVER_PASS}%g" /bot/config.php
-RUN sed -i "s%EXAMPLE_BOT_USER%${IRC_SERVER_PORT}%g" /bot/config.php
 RUN sed -i "s%BOT_USE_SATSUKI = false%BOT_USE_SATSUKI = ${BOT_USE_SATSUKI}%g" /bot/config.php
 RUN sed -i "s%EXAMPLE_BOT_USER%${BOT_USER}%g" /bot/config.php
 RUN sed -i "s%EXAMPLE_BOT_NICK%${BOT_NICK}%g" /bot/config.php
