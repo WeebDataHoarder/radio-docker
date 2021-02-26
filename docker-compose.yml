@@ -146,6 +146,8 @@ services:
       - DB_NAME_TORRENTS=${DB_NAME_TORRENTS}
     networks:
       - radio
+    ports:
+      - "${SITE_DB_PORT}:5432"
     volumes:
       - ./docker/postgres/postgresql.conf:/etc/postgresql/postgresql.conf:ro
       - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
