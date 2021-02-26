@@ -23,6 +23,7 @@ ARG BOT_PASSWORD=""
 ARG BOT_KEYID=miku
 ARG BOT_RADIO_CHANNEL="#radio"
 ARG BOT_NP_CHANNEL="#radio-np"
+ARG IRC_SERVER_PASS=""
 
 RUN DEBIAN_FRONTEND=noninteractive apt update && \
     DEBIAN_FRONTEND=noninteractive apt install -y \
