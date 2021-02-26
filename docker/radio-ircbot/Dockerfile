@@ -26,7 +26,8 @@ ARG BOT_NP_CHANNEL="#radio-np"
 
 RUN DEBIAN_FRONTEND=noninteractive apt update && \
     DEBIAN_FRONTEND=noninteractive apt install -y \
-    unzip git sox libsox-fmt-all ffmpeg python3 python3-pip libpq-dev && \
+    unzip git sox libsox-fmt-all ffmpeg python3 python3-pip libpq-dev locales && \
+    sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen && locale-gen && update-locale LANG="en_US.UTF-8" && \
     docker-php-ext-install -j$(nproc) pgsql && \
     pip3 install cchardet eac-logchecker xld-logchecker
 
