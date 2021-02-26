@@ -5,6 +5,7 @@ echo "host=\"0.0.0.0\"" >> /config.toml
 echo "port=${KAWA_API_PORT}" >> /config.toml
 echo "[queue]" >> /config.toml
 echo "random_song_api=\"${KAWA_RANDOM_SONG_URL}?apikey=${DEFAULT_API_KEY}\"" >> /config.toml
+echo "nr=\"${KAWA_NEXT_RANDOM_URL}\"" >> /config.toml
 echo "np=\"${KAWA_NOW_PLAYING_URL}\"" >> /config.toml
 echo "fallback=\"/error.flac\"" >> /config.toml
 

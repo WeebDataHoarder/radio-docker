@@ -1,1 +1,5 @@
+.idea/
 data/
+services/radio-web/deps
+.git/modules/services/radio-web/modules
+.git/modules/services/radio-web/objects
