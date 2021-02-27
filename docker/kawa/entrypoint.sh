@@ -59,5 +59,4 @@ mount="stream.flac"
 container="flac"
 EOF
 
-#RUST_LOG=debug
-RUST_BACKTRACE=full RUST_LOG=info /usr/bin/kawa /config.toml
+RUST_BACKTRACE=full RUST_LOG=${KAWA_LOG} /usr/bin/kawa /config.toml

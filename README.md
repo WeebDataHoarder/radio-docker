@@ -15,3 +15,13 @@ Glue and linkage of all projects to work together.
 ### Utilities
 * `scripts/psql.sh`: Opens a Postgres CLI session with the running database.
 * `scripts/library-add.sh PATH`: Scans and adds _PATH_ to the music database library.
+
+### Advanced usage
+Besides `.env`, you can also define a `docker-compose.override.yml` for other needs. For example to disable the bot service
+```yaml
+version: "3"
+services:
+  bot:
+    deploy:
+      replicas: 0
+```
