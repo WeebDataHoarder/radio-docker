@@ -18,10 +18,10 @@ COPY ./docker/nginx/ffdhe4096.pem /etc/ssl/ffdhe4096.pem
 COPY ./docker/nginx/snippets/* /etc/nginx/snippets/
 COPY ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./docker/nginx/radio.conf /etc/nginx/sites-enabled/default
-RUN sed -i "s%kawa:8001%kawa:${KAWA_STREAM_PORT}%g" /etc/nginx/sites-enabled/default
-RUN sed -i "s%api:8011%api:${STEWDIO_API_PORT}%g" /etc/nginx/sites-enabled/default
-RUN sed -i "s%server_name _%server_name ${SITE_HOSTNAME}%g" /etc/nginx/sites-enabled/default
-RUN sed -i "s%/mnt%${DATA_MOUNT_PATH}%g" /etc/nginx/sites-enabled/default
+RUN sed -i "s%kawa:8001%kawa:${KAWA_STREAM_PORT}%g" /etc/nginx/sites-enabled/default && \
+    sed -i "s%api:8011%api:${STEWDIO_API_PORT}%g" /etc/nginx/sites-enabled/default && \
+    sed -i "s%server_name _%server_name ${SITE_HOSTNAME}%g" /etc/nginx/sites-enabled/default && \
+    sed -i "s%/mnt%${DATA_MOUNT_PATH}%g" /etc/nginx/sites-enabled/default
 
 EXPOSE 80
 EXPOSE 443
