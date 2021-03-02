@@ -20,7 +20,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt update && \
 WORKDIR /web/bin
 COPY ./services/radio-web/bin .
 COPY ./.git/modules/services/radio-web/refs/heads/master /web/.version
-COPY ./docker/radio-web/config.php .
+COPY ./docker/fpm/config.php .
 
 RUN sed -i "s%api:8011%api:${STEWDIO_API_PORT}%g" /web/bin/config.php && \
     sed -i "s%EXAMPLE_HOSTNAME%${SITE_HOSTNAME}%g" /web/bin/config.php && \
