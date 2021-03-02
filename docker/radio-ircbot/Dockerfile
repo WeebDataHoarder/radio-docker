@@ -37,7 +37,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt update && \
 
 WORKDIR /bot
 COPY ./services/radio-ircbot .
-COPY ./.git/modules/services/radio-ircbot/refs/heads/master /bot/.version
+COPY ./.git/modules/services/radio-ircbot/HEAD /bot/.version
 COPY ./services/radio-ircbot/config.example.php config.php
 
 RUN sed -i "s%EXAMPLE_HOSTNAME%${SITE_HOSTNAME}%g" /bot/config.php && \
