@@ -4,6 +4,12 @@ networks:
   radio:
     external: false
 
+volumes:
+  cache:
+    external: false
+  shares:
+    external: false
+
 services:
   kawa:
     build:
@@ -22,6 +28,7 @@ services:
     networks:
       - radio
     volumes:
+      - cache:/cache:ro
       - ${DATA_MOUNT_PATH}:${DATA_MOUNT_PATH}:ro
     depends_on:
       - api
@@ -106,8 +113,8 @@ services:
     networks:
       - radio
     volumes:
-      - ./data/cache:/cache:rw
-      - ./data/shares:/shares:rw
+      - cache:/cache:rw
+      - shares:/shares:rw
       - ${DATA_MOUNT_PATH}:${DATA_MOUNT_PATH}:ro
     depends_on:
       - api
@@ -127,7 +134,7 @@ services:
     networks:
       - radio
     volumes:
-      - ./data/shares:/shares:ro
+      - shares:/shares:ro
       - ${DATA_MOUNT_PATH}:${DATA_MOUNT_PATH}:ro
     ports:
       - "${SITE_PORT}:443"
