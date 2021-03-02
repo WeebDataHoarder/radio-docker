@@ -135,6 +135,7 @@ services:
       - radio
     volumes:
       - shares:/shares:ro
+      - cache:/cache:rw
       - ${DATA_MOUNT_PATH}:${DATA_MOUNT_PATH}:ro
     ports:
       - "${SITE_PORT}:443"
