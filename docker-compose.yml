@@ -147,6 +147,11 @@ services:
       - DB_NAME_TORRENTS=${DB_NAME_TORRENTS}
     networks:
       - radio
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready --dbname \"postgres://${DB_USER}:${DB_PASSWORD}@db/${DB_NAME}\"" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     ports:
       - "${SITE_DB_PORT}:5432"
     volumes:

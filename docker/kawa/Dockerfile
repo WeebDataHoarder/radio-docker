@@ -53,5 +53,5 @@ EXPOSE ${KAWA_STREAM_PORT}
 WORKDIR /
 ENTRYPOINT ["/usr/bin/kawa", "/config.toml"]
 
-HEALTHCHECK --interval=1m --timeout=15s --retries=3 --start-period=5m \
+HEALTHCHECK --interval=30s --timeout=15s --retries=3 --start-period=5m \
     CMD curl --fail http://127.0.0.1:${KAWA_API_PORT}/np | jq --exit-status -r '.hash' || exit 1

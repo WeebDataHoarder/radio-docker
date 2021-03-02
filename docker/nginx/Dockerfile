@@ -25,3 +25,6 @@ RUN sed -i "s%kawa:8001%kawa:${KAWA_STREAM_PORT}%g" /etc/nginx/sites-enabled/def
 
 EXPOSE 80
 EXPOSE 443
+
+HEALTHCHECK --interval=30s --timeout=15s --retries=5 --start-period=1m \
+    CMD service nginx status || exit 1

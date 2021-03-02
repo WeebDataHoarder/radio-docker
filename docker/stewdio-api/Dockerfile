@@ -14,7 +14,7 @@ ENV VIRTUAL_ENV=/usr/src/stewdio-api/venv3
 
 RUN DEBIAN_FRONTEND=noninteractive apt update && \
     DEBIAN_FRONTEND=noninteractive apt install -y \
-    postgresql-client locales libchromaprint-tools ffmpeg && \
+    postgresql-client locales libchromaprint-tools ffmpeg jq && \
     sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen && locale-gen && update-locale LANG="en_US.UTF-8"
 
 WORKDIR /usr/src/stewdio-api
@@ -43,5 +43,9 @@ RUN rm stewdio-api.conf && \
     sed -i "s%main = /mnt%main = ${DATA_MOUNT_PATH}%g" /etc/stewdio/api.conf
 
 EXPOSE ${STEWDIO_API_PORT}
+
+
+HEALTHCHECK --interval=30s --timeout=15s --retries=5 --start-period=1m \
+    CMD curl --fail http://127.0.0.1:${STEWDIO_API_PORT}/api/status | jq --exit-status -r '.storage.main' || exit 1
 
 ENTRYPOINT ["/entrypoint.sh"]
