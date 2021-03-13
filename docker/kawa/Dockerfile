@@ -14,7 +14,8 @@ ARG KAWA_NOW_PLAYING_URL=""
 
 WORKDIR /usr/src/kawa
 
-RUN DEBIAN_FRONTEND=noninteractive apt update && \
+RUN groupadd -r kawa && useradd -r -g kawa kawa && \
+    DEBIAN_FRONTEND=noninteractive apt update && \
     DEBIAN_FRONTEND=noninteractive apt install -y \
     libmp3lame-dev libopus-dev libvorbis-dev \
     libavcodec-dev libavutil-dev libavformat-dev libavfilter-dev libavdevice-dev libswresample-dev libswscale-dev \
@@ -45,7 +46,7 @@ COPY ./services/kawa .
 RUN cargo install --path . --locked --verbose --root /usr && \
     rm -rf /usr/src/kawa
 
-
+USER kawa
 
 EXPOSE ${KAWA_API_PORT}
 EXPOSE ${KAWA_STREAM_PORT}

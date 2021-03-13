@@ -25,6 +25,9 @@ services:
         - KAWA_NEXT_RANDOM_URL=${KAWA_NEXT_RANDOM_URL}
     container_name: kawa
     restart: always
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
     networks:
       - radio
     volumes:
@@ -53,12 +56,17 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
     restart: always
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
     networks:
       - radio
     volumes:
       - ${DATA_MOUNT_PATH}:${DATA_MOUNT_PATH}:ro
     depends_on:
       - db
+    tmpfs:
+      - /tmp
 
   fpm:
     build:
@@ -75,6 +83,9 @@ services:
         - DB_NAME_TORRENTS=${DB_NAME_TORRENTS}
     container_name: fpm
     restart: always
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
     networks:
       - radio
     volumes:
@@ -109,6 +120,9 @@ services:
         - BOT_RADIO_CHANNEL=${BOT_RADIO_CHANNEL}
         - BOT_NP_CHANNEL=${BOT_NP_CHANNEL}
     restart: always
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
     container_name: bot
     networks:
       - radio
@@ -131,6 +145,9 @@ services:
         - DATA_MOUNT_PATH=${DATA_MOUNT_PATH}
     restart: always
     container_name: nginx
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
     networks:
       - radio
     volumes:
@@ -142,12 +159,19 @@ services:
     depends_on:
       - fpm
       - kawa
+    tmpfs:
+      - /run
+      - /var/cache/nginx
+      - /tmp
 
   db:
     image: postgres:13.2
     restart: always
     container_name: db
     shm_size: 1g
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -167,3 +191,9 @@ services:
       - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
       - ./docker/postgres/schema:/schema:ro
       - ./data/db:/var/lib/postgresql/data:rw
+    tmpfs:
+      # For read-only filesystem, need to create a volume/tmpfs for PostgreSQL to run its much
+      # needed configuration. The read-only flag does not make volumes and tmpfs read-only.
+      - /tmp
+      - /run
+      - /run/postgresql

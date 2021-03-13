@@ -12,7 +12,8 @@ ARG DATA_MOUNT_PATH="/mnt"
 ENV VIRTUAL_ENV=/usr/src/stewdio-api/venv3
 
 
-RUN DEBIAN_FRONTEND=noninteractive apt update && \
+RUN groupadd -r api && useradd -r -g api api && \
+    DEBIAN_FRONTEND=noninteractive apt update && \
     DEBIAN_FRONTEND=noninteractive apt install -y \
     postgresql-client locales libchromaprint-tools ffmpeg jq && \
     sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen && locale-gen && update-locale LANG="en_US.UTF-8"
@@ -42,7 +43,10 @@ RUN rm stewdio-api.conf && \
     sed -i "s%DB_NAME%${DB_NAME}%g" /etc/stewdio/api.conf && \
     sed -i "s%main = /mnt%main = ${DATA_MOUNT_PATH}%g" /etc/stewdio/api.conf
 
+USER api
+
 EXPOSE ${STEWDIO_API_PORT}
+
 
 
 HEALTHCHECK --interval=30s --timeout=15s --retries=5 --start-period=1m \

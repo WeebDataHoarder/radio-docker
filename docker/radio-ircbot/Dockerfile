@@ -25,7 +25,10 @@ ARG BOT_RADIO_CHANNEL="#radio"
 ARG BOT_NP_CHANNEL="#radio-np"
 ARG IRC_SERVER_PASS=""
 
-RUN DEBIAN_FRONTEND=noninteractive apt update && \
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+RUN groupadd -r bot && useradd -r -g bot bot && \
+    DEBIAN_FRONTEND=noninteractive apt update && \
     DEBIAN_FRONTEND=noninteractive apt install -y \
     python3 python3-pip \
     unzip git locales \
@@ -57,9 +60,9 @@ RUN sed -i "s%EXAMPLE_HOSTNAME%${SITE_HOSTNAME}%g" /bot/config.php && \
     sed -i "s%kawa:4040%kawa:${KAWA_API_PORT}%g" /bot/config.php && \
     sed -i "s%kawa:8001%kawa:${KAWA_STREAM_PORT}%g" /bot/config.php && \
     sed -i "s%EXAMPLE_PSQL_STRING_MUSIC%host=db dbname=${DB_NAME} user=${DB_USER} password=${DB_PASSWORD}%g" /bot/config.php && \
-    sed -i "s%EXAMPLE_PSQL_STRING_TORRENTS%host=db dbname=${DB_NAME_TORRENTS} user=${DB_USER} password=${DB_PASSWORD}%g" /bot/config.php
+    sed -i "s%EXAMPLE_PSQL_STRING_TORRENTS%host=db dbname=${DB_NAME_TORRENTS} user=${DB_USER} password=${DB_PASSWORD}%g" /bot/config.php && \
+    composer update
 
-
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && composer update
+USER bot
 
 ENTRYPOINT ["php", "/bot/bot.php"]
