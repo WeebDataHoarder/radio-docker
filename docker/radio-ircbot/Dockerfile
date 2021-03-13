@@ -36,7 +36,9 @@ RUN groupadd -r bot && useradd -r -g bot bot && \
     libpq-dev && \
     sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen && locale-gen && update-locale LANG="en_US.UTF-8" && \
     docker-php-ext-install -j$(nproc) pgsql && \
-    pip3 install cchardet eac-logchecker xld-logchecker
+    pip3 install cchardet eac-logchecker xld-logchecker && \
+    mkdir /shares && chown bot:bot /shares && \
+    mkdir /cache && chown bot:bot /cache
 
 WORKDIR /bot
 COPY ./services/radio-ircbot .
