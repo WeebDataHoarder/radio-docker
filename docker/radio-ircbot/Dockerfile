@@ -1,4 +1,4 @@
-FROM php:7.4-cli-buster
+FROM php:8.0-cli-buster
 
 ARG STEWDIO_API_PORT=8011
 ARG KAWA_API_PORT=4040
