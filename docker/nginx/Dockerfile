@@ -7,7 +7,7 @@ ARG DATA_MOUNT_PATH=/mnt
 
 RUN DEBIAN_FRONTEND=noninteractive apt update && \
     DEBIAN_FRONTEND=noninteractive apt install -y \
-    ssl-cert brotli
+    ssl-cert brotli zopfli
 
 WORKDIR /web
 COPY ./services/radio-web .
