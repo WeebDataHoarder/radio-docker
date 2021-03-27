@@ -3,6 +3,7 @@ data/
 build/
 services/radio-ircbot/vendor
 services/radio-web/deps
+services/radio-web/bin/vendor
 services/kawa/target
 .git/modules/services/radio-web/modules
 .git/modules/services/radio-web/objects

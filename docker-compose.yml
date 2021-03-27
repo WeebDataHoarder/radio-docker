@@ -93,6 +93,8 @@ services:
     depends_on:
       - db
       - api
+    tmpfs:
+      - /tmp
 
   bot:
     build:
