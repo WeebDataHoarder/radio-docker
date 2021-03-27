@@ -8,8 +8,6 @@ RUN set -ex \
         exit 1; \
     fi
 
-COPY ./ /modules/
-
 RUN set -ex \
     && apt update \
     && apt install -y --no-install-suggests --no-install-recommends \
