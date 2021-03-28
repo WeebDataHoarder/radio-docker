@@ -144,7 +144,7 @@ services:
         ENABLED_MODULES: brotli
         STEWDIO_API_PORT: ${STEWDIO_API_PORT}
         SITE_HOSTNAME: ${SITE_HOSTNAME}
-        AWA_STREAM_PORT: ${KAWA_STREAM_PORT}
+        KAWA_STREAM_PORT: ${KAWA_STREAM_PORT}
         DATA_MOUNT_PATH: ${DATA_MOUNT_PATH}
     restart: always
     container_name: nginx
