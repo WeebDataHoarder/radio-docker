@@ -20,7 +20,7 @@ services:
         - KAWA_STREAM_PORT=${KAWA_STREAM_PORT}
         - KAWA_API_PORT=${KAWA_API_PORT}
         - KAWA_STREAM_NAME=${KAWA_STREAM_NAME}
-        - KAWA_RANDOM_SONG_URL=${KAWA_RANDOM_SONG_URL}?apikey=${DEFAULT_API_KEY}
+        - KAWA_RANDOM_SONG_URL=${KAWA_RANDOM_SONG_URL}
         - KAWA_NOW_PLAYING_URL=${KAWA_NOW_PLAYING_URL}
         - KAWA_NEXT_RANDOM_URL=${KAWA_NEXT_RANDOM_URL}
     container_name: kawa
@@ -35,6 +35,7 @@ services:
       - ${DATA_MOUNT_PATH}:${DATA_MOUNT_PATH}:ro
     depends_on:
       - api
+      - dj
 
   api:
     build:
@@ -135,6 +136,29 @@ services:
     depends_on:
       - api
       - kawa
+
+  dj:
+    build:
+      context: .
+      dockerfile: ./docker/radio-dj/Dockerfile
+      args:
+        - STEWDIO_API_PORT=${STEWDIO_API_PORT}
+        - KAWA_STREAM_PORT=${KAWA_STREAM_PORT}
+        - KAWA_API_PORT=${KAWA_API_PORT}
+        - DEFAULT_API_KEY=${DEFAULT_API_KEY}
+        - DB_USER=${DB_USER}
+        - DB_PASSWORD=${DB_PASSWORD}
+        - DB_NAME=${DB_NAME}
+        - DB_NAME_TORRENTS=${DB_NAME_TORRENTS}
+    restart: always
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    container_name: dj
+    networks:
+      - radio
+    depends_on:
+      - api
 
   nginx:
     build:

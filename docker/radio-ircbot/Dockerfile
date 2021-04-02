@@ -63,7 +63,7 @@ RUN sed -i "s%EXAMPLE_HOSTNAME%${SITE_HOSTNAME}%g" /bot/config.php && \
     sed -i "s%kawa:8001%kawa:${KAWA_STREAM_PORT}%g" /bot/config.php && \
     sed -i "s%EXAMPLE_PSQL_STRING_MUSIC%host=db dbname=${DB_NAME} user=${DB_USER} password=${DB_PASSWORD}%g" /bot/config.php && \
     sed -i "s%EXAMPLE_PSQL_STRING_TORRENTS%host=db dbname=${DB_NAME_TORRENTS} user=${DB_USER} password=${DB_PASSWORD}%g" /bot/config.php && \
-    composer update
+    composer update --no-interaction
 
 USER bot
 

@@ -36,4 +36,4 @@ RUN sed -i "s%api:8011%api:${STEWDIO_API_PORT}%g" /web/bin/config.php && \
     sed -i "s%EXAMPLE_LASTFM_API_KEY%api:${LASTFM_API_KEY}%g" /web/bin/config.php && \
     sed -i "s%EXAMPLE_PSQL_STRING_MUSIC%host=db dbname=${DB_NAME} user=${DB_USER} password=${DB_PASSWORD}%g" /web/bin/config.php && \
     sed -i "s%EXAMPLE_PSQL_STRING_TORRENTS%host=db dbname=${DB_NAME_TORRENTS} user=${DB_USER} password=${DB_PASSWORD}%g" /web/bin/config.php && \
-    composer update
+    composer update --no-interaction
