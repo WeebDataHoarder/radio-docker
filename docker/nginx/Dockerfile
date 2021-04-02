@@ -74,8 +74,15 @@ RUN DEBIAN_FRONTEND=noninteractive apt update && \
     && rm -rf /var/lib/apt/lists/
 
 WORKDIR /web
-COPY ./services/radio-web .
-RUN rm -rf /web/bin
+COPY ./services/radio-web/static .
+COPY ./services/radio-web/res/compress.sh /compress.sh
+RUN /compress.sh /web/fonts && \
+    /compress.sh /web/img && \
+    /compress.sh /web/js && \
+    /compress.sh /web/js/player && \
+    /compress.sh /web/js/player/codecs && \
+    /compress.sh /web/js/modules && \
+    /compress.sh /web/js/modules/subtitles
 
 COPY ./docker/nginx/ffdhe4096.pem /etc/ssl/ffdhe4096.pem
 
@@ -85,15 +92,7 @@ COPY ./docker/nginx/radio.conf /etc/nginx/sites-enabled/default
 RUN sed -i "s%kawa:8001%kawa:${KAWA_STREAM_PORT}%g" /etc/nginx/sites-enabled/default && \
     sed -i "s%api:8011%api:${STEWDIO_API_PORT}%g" /etc/nginx/sites-enabled/default && \
     sed -i "s%server_name _%server_name ${SITE_HOSTNAME}%g" /etc/nginx/sites-enabled/default && \
-    sed -i "s%/mnt%${DATA_MOUNT_PATH}%g" /etc/nginx/sites-enabled/default && \
-    res/compress.sh /web/fonts && \
-    res/compress.sh /web/img && \
-    res/compress.sh /web/js && \
-    res/compress.sh /web/js/player && \
-    res/compress.sh /web/js/player/codecs && \
-    res/compress.sh /web/js/modules && \
-    res/compress.sh /web/js/modules/subtitles
-
+    sed -i "s%/mnt%${DATA_MOUNT_PATH}%g" /etc/nginx/sites-enabled/default
 EXPOSE 80
 EXPOSE 443
 
