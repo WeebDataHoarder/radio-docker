@@ -1,4 +1,6 @@
-FROM nginx:mainline as builder
+ARG NGINX_TAG=mainline
+
+FROM nginx:${NGINX_TAG} as builder
 
 ARG ENABLED_MODULES
 
@@ -55,7 +57,7 @@ RUN set -ex \
 
 
 
-FROM nginx:mainline
+FROM nginx:${NGINX_TAG}
 ARG ENABLED_MODULES
 ARG KAWA_STREAM_PORT=8001
 ARG STEWDIO_API_PORT=8011
