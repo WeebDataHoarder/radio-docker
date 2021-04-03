@@ -214,10 +214,11 @@ services:
     ports:
       - "${SITE_DB_PORT}:5432"
     volumes:
-      - ./docker/postgres/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+      - ./docker/postgres/postgresql.conf:/etc/postgresql.conf:ro
       - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
       - ./docker/postgres/schema:/schema:ro
       - ./data/db:/var/lib/postgresql/data:rw
+    command: postgres -c config_file=/etc/postgresql.conf
     tmpfs:
       # For read-only filesystem, need to create a volume/tmpfs for PostgreSQL to run its much
       # needed configuration. The read-only flag does not make volumes and tmpfs read-only.
