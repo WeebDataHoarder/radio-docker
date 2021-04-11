@@ -15,12 +15,15 @@ ENV VIRTUAL_ENV=/usr/src/stewdio-api/venv3
 RUN groupadd -r api && useradd -r -g api api && \
     DEBIAN_FRONTEND=noninteractive apt update && \
     DEBIAN_FRONTEND=noninteractive apt install -y \
-    postgresql-client locales libchromaprint-tools ffmpeg jq && \
+    postgresql-client locales libchromaprint-tools ffmpeg jq libwebp-dev && \
     sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen && locale-gen && update-locale LANG="en_US.UTF-8"
 
 WORKDIR /usr/src/stewdio-api
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+RUN pip install --upgrade pip && \
+    pip install wheel
+
 
 COPY ./docker/stewdio-api/entrypoint.sh /
 COPY ./docker/stewdio-api/api.conf /etc/stewdio/api.conf
