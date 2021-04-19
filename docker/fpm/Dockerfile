@@ -9,6 +9,8 @@ ARG DB_PASSWORD=radio
 ARG DB_NAME=music
 ARG DB_NAME_TORRENTS=torrents
 
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 RUN DEBIAN_FRONTEND=noninteractive apt update && \
@@ -16,6 +18,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt update && \
     ffmpeg libpq-dev locales \
     mecab mecab-ipadic-utf8 mecab-utils libmecab-dev unzip && \
     docker-php-ext-install -j$(nproc) pgsql && \
+    docker-php-ext-configure opcache --enable-opcache && docker-php-ext-install opcache && \
     pear channel-discover pecl.opendogs.org && pecl install opendogs/mecab-0.6.0 && docker-php-ext-enable mecab && \
     sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen && locale-gen && update-locale LANG="en_US.UTF-8"
 
