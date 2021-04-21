@@ -9,7 +9,9 @@ ARG DB_PASSWORD=radio
 ARG DB_NAME=music
 ARG DB_NAME_TORRENTS=torrents
 
-RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" && \
+    echo >> "$PHP_INI_DIR/php.ini" && \
+    echo "expose_php = Off" >> "$PHP_INI_DIR/php.ini"
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
