@@ -78,8 +78,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt update && \
 WORKDIR /web
 COPY ./services/radio-web/static .
 COPY ./services/radio-web/res/compress.sh /compress.sh
-RUN /compress.sh /web/fonts && \
-    /compress.sh /web/img && \
+RUN /compress.sh /web/img && \
     /compress.sh /web/js && \
     /compress.sh /web/js/player && \
     /compress.sh /web/js/player/codecs && \
