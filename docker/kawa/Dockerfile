@@ -1,4 +1,4 @@
-FROM rust:1.51-buster
+FROM rust:1.51-bullseye
 
 ARG KAWA_LOG_ARG=info
 ENV RUST_LOG=${KAWA_LOG_ARG}

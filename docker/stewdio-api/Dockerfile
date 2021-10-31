@@ -1,4 +1,4 @@
-FROM python:3.9-buster
+FROM python:3.10-bullseye
 
 ARG KAWA_API_PORT=4040
 ARG STEWDIO_API_PORT=8011
