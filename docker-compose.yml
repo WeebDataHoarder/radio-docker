@@ -160,6 +160,24 @@ services:
     depends_on:
       - api
 
+  fcmm:
+    image: fcmm
+    build: https://git.gammaspectra.live/S.O.N.G/FinalCommander.git#master
+    restart: always
+    container_name: fcmm
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - radio
+    environment:
+      - PRIVATE_KEY=${FINAL_COMMANDER_PRIVATE_KEY}
+    command: >-
+      -listen ":7777"
+      -servers "${ORBITAL_BEAT_SERVERS}"
+    tmpfs:
+      - /tmp
+
   nginx:
     build:
       context: .
