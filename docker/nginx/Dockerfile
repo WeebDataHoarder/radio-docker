@@ -15,6 +15,7 @@ RUN set -ex \
     && apt install -y --no-install-suggests --no-install-recommends \
                 patch make wget mercurial devscripts debhelper dpkg-dev \
                 quilt lsb-release build-essential libxml2-utils xsltproc \
+                libpcre3-dev \
                 equivs git g++ \
     && hg clone https://hg.nginx.org/pkg-oss/ \
     && cd pkg-oss \
