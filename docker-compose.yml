@@ -204,6 +204,7 @@ services:
     depends_on:
       - fpm
       - kawa
+      - fcmm
     tmpfs:
       - /run
       - /var/cache/nginx
