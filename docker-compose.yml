@@ -171,10 +171,13 @@ services:
     networks:
       - radio
     environment:
-      - PRIVATE_KEY=${FINAL_COMMANDER_PRIVATE_KEY}
+      - PRIVATE_SEED=${FINAL_COMMANDER_PRIVATE_SEED}
     command: >-
       -listen ":7777"
       -servers "${ORBITAL_BEAT_SERVERS}"
+      -database /database
+    volumes:
+      - ./data/fcmm:/database:rw
     tmpfs:
       - /tmp
 
