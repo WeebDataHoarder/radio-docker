@@ -13,3 +13,6 @@
 [submodule "services/radio-dj"]
 	path = services/radio-dj
 	url = https://github.com/WeebDataHoarder/radio-dj.git
+[submodule "services/MeteorLight"]
+	path = services/MeteorLight
+	url = https://git.gammaspectra.live/S.O.N.G/MeteorLight.git

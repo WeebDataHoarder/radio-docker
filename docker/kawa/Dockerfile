@@ -1,4 +1,4 @@
-FROM rust:1.51-bullseye
+FROM golang:1.18rc1-bullseye
 
 ARG KAWA_LOG_ARG=info
 ENV RUST_LOG=${KAWA_LOG_ARG}
@@ -17,19 +17,22 @@ WORKDIR /usr/src/kawa
 RUN groupadd -r kawa && useradd -r -g kawa kawa && \
     DEBIAN_FRONTEND=noninteractive apt update && \
     DEBIAN_FRONTEND=noninteractive apt install -y \
-    libmp3lame-dev libopus-dev libvorbis-dev \
-    libavcodec-dev libavutil-dev libavformat-dev libavfilter-dev libavdevice-dev libswresample-dev libswscale-dev \
-    jq
-
-# Do this to cache dependency building
-COPY ./docker/kawa/dummy.rs ./dummy.rs
-COPY ./docker/kawa/dummy.rs ./kaeru/dummy.rs
-COPY ./services/kawa/Cargo.* ./
-COPY ./services/kawa/kaeru/Cargo.* ./kaeru/
-RUN sed -i 's#src/main.rs#dummy.rs#' Cargo.toml && \
-    sed -i 's#src/lib.rs#dummy.rs#' kaeru/Cargo.toml && \
-    cargo build --release && \
-    rm -rf ./src ./kaeru ./Cargo.*
+    jq curl \
+    git build-essential autoconf automake libtool \
+    libflac-dev libopus-dev libopusfile-dev libsamplerate0-dev libmp3lame-dev && \
+    git clone --depth 1 https://github.com/xiph/libopusenc.git && cd libopusenc && \
+    ./autogen.sh && \
+    ./configure --prefix /usr &&  \
+    make &&  \
+    make install &&  \
+    cd .. && \
+    git clone --depth 1 https://github.com/mstorsjo/fdk-aac.git && cd fdk-aac  && \
+    ./autogen.sh &&  \
+    ./configure --prefix /usr && \
+    make -j$(nproc) && \
+    make install && \
+    cd .. && \
+    rm -rf /src/libopusenc /src/fdk-aac
 
 COPY ./docker/kawa/error.flac /
 COPY ./docker/kawa/config.toml /config.toml
@@ -41,10 +44,8 @@ RUN sed -i "s%name=\"radio\"%name=\"${KAWA_STREAM_NAME}\"%g" /config.toml && \
     sed -i "s%port=4040%port=${KAWA_API_PORT}%g" /config.toml && \
     sed -i "s%port=8001%port=${KAWA_STREAM_PORT}%g" /config.toml
 
-COPY ./services/kawa .
-# Code no longer needed
-RUN cargo install --path . --locked --verbose --root /usr && \
-    rm -rf /usr/src/kawa
+COPY ./services/MeteorLight .
+RUN go build -buildvcs=false -v -o /usr/bin/MeteorLight . && rm -rf /code
 
 USER kawa
 
@@ -52,7 +53,7 @@ EXPOSE ${KAWA_API_PORT}
 EXPOSE ${KAWA_STREAM_PORT}
 
 WORKDIR /
-ENTRYPOINT ["/usr/bin/kawa", "/config.toml"]
+ENTRYPOINT ["/usr/bin/MeteorLight"]
 
 HEALTHCHECK --interval=30s --timeout=15s --retries=3 --start-period=5m \
     CMD curl --fail http://127.0.0.1:${KAWA_API_PORT}/np | jq --exit-status -r '.hash' || exit 1
