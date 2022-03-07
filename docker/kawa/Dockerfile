@@ -38,6 +38,7 @@ COPY ./docker/kawa/error.flac /
 COPY ./docker/kawa/config.toml /config.toml
 
 RUN sed -i "s%name=\"radio\"%name=\"${KAWA_STREAM_NAME}\"%g" /config.toml && \
+    sed -i "s%description=\"\"%name=\"${KAWA_STREAM_DESCRIPTION}\"%g" /config.toml && \
     sed -i "s%KAWA_RANDOM_SONG_URL%${KAWA_RANDOM_SONG_URL}%g" /config.toml && \
     sed -i "s%KAWA_NEXT_RANDOM_URL%${KAWA_NEXT_RANDOM_URL}%g" /config.toml && \
     sed -i "s%KAWA_NOW_PLAYING_URL%${KAWA_NOW_PLAYING_URL}%g" /config.toml && \

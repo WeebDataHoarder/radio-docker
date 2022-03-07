@@ -11,6 +11,8 @@ fallback="/error.flac"
 [radio]
 port=8001
 name="radio"
+description=""
+private=false
 
 
 [[streams]]
