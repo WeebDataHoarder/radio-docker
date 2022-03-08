@@ -19,7 +19,7 @@ RUN groupadd -r kawa && useradd -r -g kawa kawa && \
     DEBIAN_FRONTEND=noninteractive apt install -y \
     jq curl \
     git build-essential autoconf automake libtool \
-    libflac-dev libopus-dev libopusfile-dev libsamplerate0-dev libmp3lame-dev && \
+    libflac-dev libopus-dev libopusfile-dev libsamplerate0-dev libmp3lame-dev libebur128-dev && \
     git clone --depth 1 https://github.com/xiph/libopusenc.git && cd libopusenc && \
     ./autogen.sh && \
     ./configure --prefix /usr &&  \
