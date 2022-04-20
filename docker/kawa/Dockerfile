@@ -1,4 +1,4 @@
-FROM golang:1.18rc1-bullseye
+FROM golang:1.18-bullseye
 
 ARG KAWA_LOG_ARG=info
 ENV RUST_LOG=${KAWA_LOG_ARG}
