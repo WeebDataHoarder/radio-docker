@@ -17,19 +17,21 @@ private=false
 
 [[streams]]
 mount="stream192.mp3"
+codec="mp3"
 container="mp3"
 bitrate="v2"
 
 [[streams]]
 mount="stream128.aac"
 container="aac"
-codec="he-aacv2"
-bitrate=128
+codec="aac"
+bitrate="vbr4"
 
 [[streams]]
 mount="stream64.ogg"
 container="ogg"
 codec="opus"
+channels=1
 bitrate=64
 
 [[streams]]
@@ -46,5 +48,8 @@ bitrate=256
 
 [[streams]]
 mount="stream.flac"
+codec="flac"
 container="flac"
-bitrate=16
+bitdepth=16
+block_size=4096
+compression_level=2
