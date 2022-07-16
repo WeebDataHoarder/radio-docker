@@ -31,7 +31,6 @@ bitrate="vbr4"
 mount="stream64.ogg"
 container="ogg"
 codec="opus"
-channels=1
 bitrate=64
 
 [[streams]]
@@ -52,4 +51,4 @@ codec="flac"
 container="flac"
 bitdepth=16
 block_size=4096
-compression_level=2
+compression_level=7
