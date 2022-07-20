@@ -24,19 +24,13 @@ RUN groupadd -r kawa && useradd -r -g kawa kawa && \
     DEBIAN_FRONTEND=noninteractive apt install -y \
     jq curl \
     git build-essential autoconf automake cmake make libtool libtool-bin gettext \
-    libssl-dev && \
+    libssl-dev libebur128-dev && \
     git clone --depth 1 --branch 0.2.2 https://github.com/libsndfile/libsamplerate.git && cd libsamplerate && \
     ./autogen.sh && \
     ./configure --prefix /usr &&  \
     make &&  \
     make install && \
     cd .. && \
-    git clone --depth 1 --branch v1.2.6 https://github.com/jiixyj/libebur128.git && cd libebur128 && \
-    mkdir build && cd build && \
-    cmake .. -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON -DCMAKE_BUILD_TYPE=Release &&  \
-    make &&  \
-    make install && \
-    cd ../.. && \
     wget https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz -O lame-3.100.tar.gz && \
     tar -xzvf lame-3.100.tar.gz && \
     cd lame-3.100 && \
@@ -86,7 +80,7 @@ RUN groupadd -r kawa && useradd -r -g kawa kawa && \
     make -j$(nproc) && \
     make install && \
     cd .. && \
-    rm -rf /src/libsamplerate /src/libebur128 /src/lame-3.100 /src/ogg /src/opus /src/opusfile /src/flac /src/libopusenc /src/fdk-aac /src/alac
+    rm -rf /src/libsamplerate /src/lame-3.100 /src/ogg /src/opus /src/opusfile /src/flac /src/libopusenc /src/fdk-aac /src/alac
 
 COPY ./docker/kawa/error.flac /
 COPY ./docker/kawa/config.toml /config.toml
