@@ -4,6 +4,7 @@ port=4040
 
 [queue]
 random_song_api="KAWA_RANDOM_SONG_URL"
+song_fetch_url="https://SITE_HOSTNAME/md5/"
 nr="KAWA_NEXT_RANDOM_URL"
 np="KAWA_NOW_PLAYING_URL"
 fallback="/error.flac"

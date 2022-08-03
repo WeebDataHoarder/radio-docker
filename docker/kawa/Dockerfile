@@ -1,4 +1,4 @@
-FROM golang:1.18-alpine AS builder
+FROM golang:1.19-alpine AS builder
 
 WORKDIR /src
 
@@ -99,6 +99,7 @@ RUN go build -buildvcs=false -v -o /usr/bin/MeteorLight
 
 FROM alpine:latest
 
+ARG SITE_HOSTNAME=radio
 ARG KAWA_LOG_ARG=info
 ENV RUST_LOG=${KAWA_LOG_ARG}
 ENV RUST_BACKTRACE=full
@@ -136,7 +137,8 @@ RUN sed -i "s%name=\"radio\"%name=\"${KAWA_STREAM_NAME}\"%g" /config.toml && \
     sed -i "s%KAWA_NEXT_RANDOM_URL%${KAWA_NEXT_RANDOM_URL}%g" /config.toml && \
     sed -i "s%KAWA_NOW_PLAYING_URL%${KAWA_NOW_PLAYING_URL}%g" /config.toml && \
     sed -i "s%port=4040%port=${KAWA_API_PORT}%g" /config.toml && \
-    sed -i "s%port=8001%port=${KAWA_STREAM_PORT}%g" /config.toml
+    sed -i "s%port=8001%port=${KAWA_STREAM_PORT}%g" /config.toml && \
+    sed -i "s%SITE_HOSTNAME%port=${SITE_HOSTNAME}%g" /config.toml
 
 USER kawa
 

@@ -16,6 +16,7 @@ services:
       context: .
       dockerfile: ./docker/kawa/Dockerfile
       args:
+        - SITE_HOSTNAME=${SITE_HOSTNAME}
         - KAWA_LOG_ARG=${KAWA_LOG}
         - KAWA_STREAM_PORT=${KAWA_STREAM_PORT}
         - KAWA_API_PORT=${KAWA_API_PORT}
