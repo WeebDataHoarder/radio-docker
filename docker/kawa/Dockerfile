@@ -138,7 +138,7 @@ RUN sed -i "s%name=\"radio\"%name=\"${KAWA_STREAM_NAME}\"%g" /config.toml && \
     sed -i "s%KAWA_NOW_PLAYING_URL%${KAWA_NOW_PLAYING_URL}%g" /config.toml && \
     sed -i "s%port=4040%port=${KAWA_API_PORT}%g" /config.toml && \
     sed -i "s%port=8001%port=${KAWA_STREAM_PORT}%g" /config.toml && \
-    sed -i "s%SITE_HOSTNAME%port=${SITE_HOSTNAME}%g" /config.toml
+    sed -i "s%SITE_HOSTNAME%${SITE_HOSTNAME}%g" /config.toml
 
 USER kawa
 
