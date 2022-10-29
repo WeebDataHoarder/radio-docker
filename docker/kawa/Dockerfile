@@ -6,6 +6,7 @@ ENV CFLAGS="-march=native -Ofast -flto"
 ENV CXXFLAGS="-march=native -Ofast -flto"
 ENV LDFLAGS="-flto"
 ENV CGO_CFLAGS="-march=native -Ofast"
+ENV GOPROXY="direct"
 
 RUN apk update && apk add --no-cache \
     git gcc g++ musl-dev bash autoconf automake cmake make libtool gettext \
@@ -40,7 +41,7 @@ RUN git clone --depth 1 --branch v1.3.5 https://gitlab.xiph.org/xiph/ogg.git && 
     make install && \
     cd ..
 
-RUN git clone --branch master https://gitlab.xiph.org/xiph/opus.git && cd opus && \
+RUN git clone --depth 1 --branch master https://gitlab.xiph.org/xiph/opus.git && cd opus && \
     ./autogen.sh && \
     ./configure --enable-float-approx --prefix /usr &&  \
     make -j$(nproc) && \
@@ -68,21 +69,21 @@ RUN git clone --depth 1 --branch v1.3.7 https://gitlab.xiph.org/xiph/vorbis.git 
     make install && \
     cd ..
 
-RUN git clone --depth 1 --branch 1.3.4 https://gitlab.xiph.org/xiph/flac.git && cd flac && \
+RUN git clone --depth 1 --branch 1.4.2 https://gitlab.xiph.org/xiph/flac.git && cd flac && \
     ./autogen.sh && \
     ./configure --prefix /usr &&  \
     make -j$(nproc) && \
     make install && \
     cd ..
 
-RUN git clone --depth 1 https://github.com/mstorsjo/fdk-aac.git && cd fdk-aac && \
+RUN git clone --depth 1 --branch master https://github.com/mstorsjo/fdk-aac.git && cd fdk-aac && \
     ./autogen.sh &&  \
     ./configure --prefix /usr && \
     make -j$(nproc) && \
     make install && \
     cd ..
 
-RUN git clone --depth 1 https://git.gammaspectra.live/S.O.N.G/alac.git && cd alac && \
+RUN git clone --depth 1 --branch master https://git.gammaspectra.live/S.O.N.G/alac.git && cd alac && \
     autoreconf -fi &&  \
     ./configure --prefix /usr && \
     make -j$(nproc) && \
