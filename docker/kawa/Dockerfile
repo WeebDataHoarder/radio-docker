@@ -41,7 +41,7 @@ RUN git clone --depth 1 --branch v1.3.5 https://gitlab.xiph.org/xiph/ogg.git && 
     make install && \
     cd ..
 
-RUN git clone --depth 1 --branch master https://gitlab.xiph.org/xiph/opus.git && cd opus && \
+RUN git clone --branch master https://gitlab.xiph.org/xiph/opus.git && cd opus && \
     ./autogen.sh && \
     ./configure --enable-float-approx --prefix /usr &&  \
     make -j$(nproc) && \
